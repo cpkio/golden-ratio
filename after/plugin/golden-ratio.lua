@@ -5,15 +5,18 @@ vim.api.nvim_create_autocmd(
     group = 'GoldenRatio',
     pattern = { '*' },
     callback = function()
-      local ui_width = vim.api.nvim_list_uis()[1].width
       local win_current_id = vim.api.nvim_tabpage_get_win(0)
+      if vim.api.nvim_win_get_config(win_current_id).relative ~= '' then
+        return
+      end
+
+      local ui_width = vim.api.nvim_list_uis()[1].width
       local windows_ids = vim.api.nvim_tabpage_list_wins(0)
 
       local full_width_count = 0
       for _, v in pairs(windows_ids) do
         if (vim.api.nvim_win_get_width(v) == ui_width) then
           full_width_count = full_width_count + 1
-          print('Full width: ', full_width_count)
         end
       end
       for _, v in pairs(windows_ids) do
